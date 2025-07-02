@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>企业微信消息推送工具</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .card { background: #f9f9f9; border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #07c160; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 4px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>企业微信消息推送</h1>
+        <div class="form-group">
+            <label>企业ID (CorpID)</label>
+            <input type="text" id="corpId" placeholder="wwxxxxxx">
+        </div>
+        <div class="form-group">
+            <label>应用Secret</label>
+            <input type="password" id="corpSecret">
+        </div>
+        <div class="form-group">
+            <label>应用AgentID</label>
+            <input type="number" id="agentId">
+        </div>
+        <div class="form-group">
+            <label>推送内容</label>
+            <textarea id="content" rows="5" placeholder="输入消息内容..."></textarea>
+        </div>
+        <button onclick="sendMessage()">发送消息</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            // 获取配置参数
+            const corpId = document.getElementById('corpId').value;
+            const corpSecret = document.getElementById('corpSecret').value;
+            const agentId = document.getElementById('agentId').value;
+            const content = document.getElementById('content').value;
+            const resultEl = document.getElementById('result');
+
+            // 验证输入
+            if (!corpId || !corpSecret || !agentId || !content) {
+                showResult("所有字段必须填写！", "error");
+                return;
+            }
+
+            try {
+                // 1. 获取Access Token
+                const tokenRes = await fetch(
+                    `https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${corpId}&corpsecret=${corpSecret}`
+                );
+                const tokenData = await tokenRes.json();
+                
+                if (tokenData.errcode !== 0) {
+                    throw `Token获取失败: ${tokenData.errmsg}`;
+                }
+
+                // 2. 发送消息
+                const msgRes = await fetch(
+                    `https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=${tokenData.access_token}`,
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            touser: "@all",
+                            msgtype: "text",
+                            agentid: agentId,
+                            text: { content },
+                            enable_duplicate_check: 1
+                        })
+                    }
+                );
+                const msgResult = await msgRes.json();
+
+                // 3. 处理结果
+                if (msgResult.errcode === 0) {
+                    showResult(`消息发送成功！消息ID: ${msgResult.msgid}`, "success");
+                } else {
+                    throw `发送失败: ${msgResult.errcode} - ${msgResult.errmsg}`;
+                }
+            } catch (e) {
+                showResult("错误: " + e, "error");
+            }
+        }
+
+        function showResult(message, type) {
+            const resultEl = document.getElementById('result');
+            resultEl.textContent = message;
+            resultEl.className = `result ${type}`;
+        }
+    </script>
+</body>
+</html>
