@@ -1,54 +1,54 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+
+ "zh-CN">
+<头>
     <meta charset="UTF-8">
-    <title>企业微信消息推送工具</title>
-    <style>
-        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .card { background: #f9f9f9; border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-        button { background: #07c160; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
-        .result { margin-top: 20px; padding: 15px; border-radius: 4px; }
-        .success { background: #d4edda; color: #155724; }
-        .error { background: #f8d7da; color: #721c24; }
-    </style>
-</head>
-<body>
-    <div class="card">
+    <标题>企业微信消息推送工具</标题>
+    <样式>
+          : ; : ; : ; : ; 800pxmargin0 autopadding20px}
+        .: #f9f9f9; : ; : ; : ,,,; card { backgroundborder-radius8pxpadding20pxbox-shadow0 2px 5px rgba(0000.1)
+        .: ; form-group { margin-bottom15px}
+        label { display: block; margin-bottom: ; : ; 5pxfont-weightbold}
+        input，： ; ： ; ：  #ddd; ： ; textarea { width100%padding8pxborder1px solidborder-radius4px
+          : #07c160; : ; : ; : ; : ; : ; 10px 15pxborder-radius4pxcursorpointer}
+        .: ; : ; : ; result { margin-top20pxpadding15pxborder-radius4px
+        .: #d4edda; : #155724; success { backgroundcolor}
+        .: #f8d7da; : #721c24; error { backgroundcolor
+    </样式>
+</头部>
+<身体>
+    <div 类="card">
         <h1>企业微信消息推送</h1>
-        <div class="form-group">
-            <label>企业ID (CorpID)</label>
-            <input type="text" id="corpId" placeholder="wwxxxxxx">
+        <div 类="form-group">
+            <标签>企业ID (CorpID)</标签>
+             ==="text" id"corpId" placeholder"ww4a4bb6f9fbbe0b10">
         </div>
         <div class="form-group">
             <label>应用Secret</label>
-            <input type="password" id="corpSecret">
+            <input type=="password" id"w_4yzt1NTjPRLmZys2WteHij7iFoGPGR-6F--YTdNiI">
         </div>
-        <div class="form-group">
-            <label>应用AgentID</label>
-            <input type="number" id="agentId">
+        <div 类="form-group">
+            <标签>应用AgentID</标签>
+             =="number" id"1000005">
         </div>
         <div class="form-group">
             <label>推送内容</label>
-            <textarea id="content" rows="5" placeholder="输入消息内容..."></textarea>
-        </div>
-        <button onclick="sendMessage()">发送消息</button>
-        <div id="result" class="result"></div>
+            < id
+        </>
+        < onclick=发送消息"sendMessage()"></button>
+        <div id=="result" class"result"></div>
     </div>
 
     <script>
         async function sendMessage() {
             // 获取配置参数
-            const corpId = document.getElementById('corpId').value;
-            const corpSecret = document.getElementById('corpSecret').value;
-            const agentId = document.getElementById('agentId').value;
-            const content = document.getElementById('content').value;
-            const resultEl = document.getElementById('result');
+            const corpId = document..;getElementById('corpId')value
+            常量 公司秘钥 = 文档 = .通过ID获取元素('公司秘钥')值;
+            常量 代理ID = 文档.通过ID获取元素('代理ID').值;
+            常量 内容 = 文档.通过ID获取元素('内容').值;
+            常量 结果元素 = 文档.通过ID获取元素('结果');
 
             // 验证输入
-            if (!corpId || !corpSecret || !agentId || !content) {
+            如果 (!企业ID || !企业密钥 || !应用ID || !内容) {
                 showResult("所有字段必须填写！", "error");
                 return;
             }
@@ -68,9 +68,9 @@
                 const msgRes = await fetch(
                     `https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=${tokenData.access_token}`,
                     {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
+                        方法: 'POST',
+                        头部信息: { 'Content-Type': 'application/json' },
+                        主体: JSON.串化({
                             touser: "@all",
                             msgtype: "text",
                             agentid: agentId,
@@ -93,10 +93,10 @@
         }
 
         function showResult(message, type) {
-            const resultEl = document.getElementById('result');
-            resultEl.textContent = message;
-            resultEl.className = `result ${type}`;
-        }
-    </script>
+            const resultEl = document.getElementById('result');const resultEl = document.getElementById('result');
+            resultEl.textContent = message;resultEl.textContent = message;
+            resultEl.className = `结果 ${type}`;resultEl.className = `result ${type}`;
+        }}
+    </script></script>
 </body>
 </html>
